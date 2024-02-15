@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-weather-app
+  labels:
+    app: django-weather-app
+spec:
+  replicas: 3  # Set the desired number of replicas.
+  selector:
+    matchLabels:
+      app: django-weather-app
+  strategy:
+    type: RollingUpdate  # Specify the update strategy.
+    rollingUpdate:
+      maxUnavailable: 1  # Maximum number of unavailable pods during the update.
+      maxSurge: 1  # Maximum number of additional pods to create during the update.
+  template:
+    metadata:
+      labels:
+        app: django-weather-app
+    spec:
+      containers:
+        - name: django-container
+          image: brijesh35/my-weather-app:50
+          command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+          ports:
+            - containerPort: 8000
