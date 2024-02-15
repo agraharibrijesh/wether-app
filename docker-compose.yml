@@ -2,9 +2,12 @@ version: "3.8"
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        TAG: ${GITHUB_RUN_NUMBER}
     container_name: weather-app-container
-    image: brijesh35/my-weather-app:1.0
+    image: brijesh35/my-weather-app:${GITHUB_RUN_NUMBER}
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
